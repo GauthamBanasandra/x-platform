@@ -28,7 +28,15 @@
 namespace XPlatform {
 class Syscall {
 public:
-  static bool WriteToStdout(const std::string& message);
+  /**
+   * Writes the given string to the application's
+   * standard output stream.
+   *
+   * @param message	The string to write to stdout.
+   * @returns		A boolean indicating whether the write
+   *				was successful.
+   */
+  static bool WriteToStdout(const std::string &message);
 };
 } // namespace XPlatform
 
