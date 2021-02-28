@@ -37,6 +37,11 @@ public:
    *				was successful.
    */
   static bool WriteToStdout(const std::string &message);
+
+  static int WriteToStdout(const char *message);
+
+private:
+  static bool WriteToStdoutImpl(const char *message);
 };
 } // namespace XPlatform
 

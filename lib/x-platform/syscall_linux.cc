@@ -16,11 +16,23 @@
  * limitations under the License.
  */
 
-#include "syscall.h"
-
+#include <cstring>
 #include <unistd.h>
+
+#include "syscall.h"
 
 bool XPlatform::Syscall::WriteToStdout(const std::string &message) {
   const auto result = write(1, message.c_str(), message.length());
   return result == static_cast<ssize_t>(message.length());
+}
+
+int XPlatform::Syscall::WriteToStdout(const char *message) {
+  const auto msg_len = strlen(message);
+  const auto result = write(1, message, msg_len);
+  return result == static_cast<ssize_t>(msg_len) ? 1 : 0;
+}
+
+bool XPlatform::Syscall::WriteToStdoutImpl(const char* msg)
+{
+
 }

@@ -16,19 +16,27 @@
  * limitations under the License.
  */
 
-#include "syscall.h"
-
 #include <Windows.h>
 
+#include "syscall.h"
+
 bool XPlatform::Syscall::WriteToStdout(const std::string &message) {
+  return WriteToStdoutImpl(message.c_str());
+}
+
+int XPlatform::Syscall::WriteToStdout(const char *message) {
+  return WriteToStdoutImpl(message) ? 1 : 0;
+}
+
+bool XPlatform::Syscall::WriteToStdoutImpl(const char *message) {
   auto *const stdout_handle = GetStdHandle(STD_OUTPUT_HANDLE);
   if (stdout_handle == INVALID_HANDLE_VALUE || stdout_handle == nullptr) {
     return false;
   }
 
   unsigned long bytes_written = 0;
-  const auto *const msg_ptr = message.c_str();
-  const auto result = WriteFile(stdout_handle, msg_ptr, lstrlen(msg_ptr),
-                                &bytes_written, nullptr);
-  return result && message.length() == bytes_written;
+  const auto message_len = lstrlen(message);
+  const auto result =
+      WriteFile(stdout_handle, message, message_len, &bytes_written, nullptr);
+  return result && static_cast<unsigned long>(message_len) == bytes_written;
 }
