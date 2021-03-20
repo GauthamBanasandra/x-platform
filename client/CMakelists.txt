@@ -6,3 +6,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(syscall $<TARGET_OBJECTS:x_platform_utils_obj> syscall.cc)
 target_include_directories(syscall PRIVATE ../lib)
+
+add_executable(fnmatch $<TARGET_OBJECTS:x_platform_utils_obj> fnmatch.cc)
+target_include_directories(fnmatch PRIVATE ../lib)

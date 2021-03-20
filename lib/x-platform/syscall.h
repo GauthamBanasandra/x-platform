@@ -48,6 +48,8 @@ public:
    */
   static int WriteToStdout(const char *message);
 
+  static bool FnMatch(const std::string &pattern, const std::string &str);
+
 private:
   static bool WriteToStdoutImpl(const char *message);
 };
