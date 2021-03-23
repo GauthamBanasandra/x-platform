@@ -22,10 +22,16 @@ project(XPlatform_lib)
 
 set(CMAKE_CXX_STANDARD 17)
 
+find_package(OpenSSL REQUIRED)
+
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 	set(SYSCALL_SRC syscall_windows.cc)
 else()
 	set(SYSCALL_SRC syscall_linux.cc)
+endif()
+
+if(NOT OPENSSL_FOUND)
+	message(FATAL_ERROR "Can't build without OpenSSL")
 endif()
 
 add_library(x_platform_utils_obj OBJECT ${SYSCALL_SRC} utils.cc)
