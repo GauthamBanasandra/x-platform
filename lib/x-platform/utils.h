@@ -19,6 +19,7 @@
 #ifndef NATIVE_LIBHDFSPP_LIB_CROSS_PLATFORM_UTILS
 #define NATIVE_LIBHDFSPP_LIB_CROSS_PLATFORM_UTILS
 
+#include <optional>
 #include <string>
 
 /**
@@ -27,7 +28,7 @@
  */
 namespace XPlatform {
 class Utils {
- public:
+public:
   /**
    * A cross-platform implementation of basename in linux.
    * Please refer https://www.man7.org/linux/man-pages/man3/basename.3.html
@@ -37,8 +38,10 @@ class Utils {
    *
    * @returns The trailing component of the given {@link file_path}
    */
-  static std::string Basename(const std::string& file_path);
+  static std::string Basename(const std::string &file_path);
+
+  static std::optional<std::string> FillRandBytes(unsigned char *buf, int size);
 };
-}  // namespace XPlatform
+} // namespace XPlatform
 
 #endif

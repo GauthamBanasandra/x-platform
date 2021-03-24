@@ -22,14 +22,17 @@
 #include <string>
 #include <vector>
 
-std::string XPlatform::Utils::Basename(const std::string& file_path) {
+#include <openssl/err.h>
+#include <openssl/rand.h>
+
+std::string XPlatform::Utils::Basename(const std::string &file_path) {
   if (file_path.empty()) {
     return ".";
   }
 
   const std::filesystem::path path(file_path);
   std::vector<std::string> parts;
-  for (const auto& part : std::filesystem::path(file_path)) {
+  for (const auto &part : std::filesystem::path(file_path)) {
     parts.emplace_back(part.string());
   }
 
@@ -38,4 +41,12 @@ std::string XPlatform::Utils::Basename(const std::string& file_path) {
     parts.pop_back();
   }
   return parts.back();
+}
+
+std::optional<std::string> XPlatform::Utils::FillRandBytes(unsigned char *buf,
+                                                           const int size) {
+  if (RAND_bytes(buf, size) == 1) {
+    return std::nullopt;
+  }
+  return ERR_reason_error_string(ERR_get_error());
 }
