@@ -59,6 +59,8 @@ public:
    */
   static bool FnMatch(const std::string &pattern, const std::string &str);
 
+  static void ClearBufferSafely(void *buffer, size_t size);
+
 private:
   static bool WriteToStdoutImpl(const char *message);
 };

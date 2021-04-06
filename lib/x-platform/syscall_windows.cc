@@ -17,6 +17,7 @@
  */
 
 #include <Shlwapi.h>
+#include <WinBase.h>
 #include <Windows.h>
 
 #include "syscall.h"
@@ -48,4 +49,8 @@ bool XPlatform::Syscall::WriteToStdoutImpl(const char *message) {
   const auto result =
       WriteFile(stdout_handle, message, message_len, &bytes_written, nullptr);
   return result && static_cast<unsigned long>(message_len) == bytes_written;
+}
+
+void XPlatform::Syscall::ClearBufferSafely(void *buffer, const size_t size) {
+  SecureZeroMemory(buffer, size);
 }

@@ -45,8 +45,9 @@ std::string XPlatform::Utils::Basename(const std::string &file_path) {
 
 std::optional<std::string> XPlatform::Utils::FillRandBytes(unsigned char *buf,
                                                            const int size) {
-  if (RAND_bytes(buf, size) == 1) {
+  /*if (RAND_bytes(buf, size) == 1) {
     return std::nullopt;
   }
-  return ERR_reason_error_string(ERR_get_error());
+  return ERR_reason_error_string(ERR_get_error());*/
+  return std::nullopt;
 }

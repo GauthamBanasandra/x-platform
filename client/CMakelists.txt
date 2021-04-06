@@ -10,5 +10,8 @@ target_include_directories(syscall PRIVATE ../lib)
 add_executable(fnmatch $<TARGET_OBJECTS:x_platform_utils_obj> fnmatch.cc)
 target_include_directories(fnmatch PRIVATE ../lib)
 
-add_executable(fill_rand_bytes #[[$<TARGET_OBJECTS:x_platform_utils_obj>]] fill-rand-bytes.cc)
+#add_executable(fill_rand_bytes #[[$<TARGET_OBJECTS:x_platform_utils_obj>]] fill-rand-bytes.cc)
 #target_include_directories(fill_rand_bytes PRIVATE ../lib)
+
+add_executable(clear_buffer $<TARGET_OBJECTS:x_platform_utils_obj> clear-buffer.cc)
+target_include_directories(clear_buffer PRIVATE ../lib)
