@@ -15,3 +15,6 @@ target_include_directories(fnmatch PRIVATE ../lib)
 
 add_executable(clear_buffer $<TARGET_OBJECTS:x_platform_utils_obj> clear-buffer.cc)
 target_include_directories(clear_buffer PRIVATE ../lib)
+
+add_executable(strcmp_ign_case $<TARGET_OBJECTS:x_platform_utils_obj> strcmp-ign-case.cc)
+target_include_directories(strcmp_ign_case PRIVATE ../lib)

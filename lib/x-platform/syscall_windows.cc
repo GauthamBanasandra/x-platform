@@ -20,6 +20,8 @@
 #include <WinBase.h>
 #include <Windows.h>
 
+#include <cstring>
+
 #include "syscall.h"
 
 #pragma comment(lib, "Shlwapi.lib")
@@ -52,5 +54,12 @@ bool XPlatform::Syscall::WriteToStdoutImpl(const char *message) {
 }
 
 void XPlatform::Syscall::ClearBufferSafely(void *buffer, const size_t size) {
-  SecureZeroMemory(buffer, size);
+  if (buffer != nullptr) {
+    SecureZeroMemory(buffer, size);
+  }
+}
+
+bool XPlatform::Syscall::StringCompareIgnoreCase(const std::string &a,
+                                                 const std::string &b) {
+  return _stricmp(a.c_str(), b.c_str()) == 0;
 }

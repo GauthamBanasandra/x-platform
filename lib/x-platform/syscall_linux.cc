@@ -16,9 +16,11 @@
  * limitations under the License.
  */
 
-#include <cstring>
 #include <fnmatch.h>
+#include <strings.h>
 #include <unistd.h>
+
+#include <cstring>
 
 #include "syscall.h"
 
@@ -43,4 +45,9 @@ bool XPlatform::Syscall::WriteToStdoutImpl(const char *message) {
 
 void XPlatform::Syscall::ClearBufferSafely(void *buffer, const size_t size) {
   explicit_bzero(buffer, size);
+}
+
+bool XPlatform::Syscall::StringCompareIgnoreCase(const std::string &a,
+                                                 const std::string &b) {
+  return strcasecmp(a.c_str(), b.c_str()) == 0;
 }
