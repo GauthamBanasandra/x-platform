@@ -19,7 +19,6 @@
 #ifndef NATIVE_LIBHDFSPP_LIB_CROSS_PLATFORM_UTILS
 #define NATIVE_LIBHDFSPP_LIB_CROSS_PLATFORM_UTILS
 
-#include <optional>
 #include <string>
 
 /**
@@ -39,8 +38,6 @@ public:
    * @returns The trailing component of the given {@link file_path}
    */
   static std::string Basename(const std::string &file_path);
-
-  static std::optional<std::string> FillRandBytes(unsigned char *buf, int size);
 };
 } // namespace XPlatform
 
