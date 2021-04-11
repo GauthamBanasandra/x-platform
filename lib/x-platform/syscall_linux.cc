@@ -20,6 +20,7 @@
 #include <strings.h>
 #include <unistd.h>
 
+#include <cstdlib>
 #include <cstring>
 
 #include "syscall.h"
@@ -50,4 +51,12 @@ void XPlatform::Syscall::ClearBufferSafely(void *buffer, const size_t size) {
 bool XPlatform::Syscall::StringCompareIgnoreCase(const std::string &a,
                                                  const std::string &b) {
   return strcasecmp(a.c_str(), b.c_str()) == 0;
+}
+
+int XPlatform::Syscall::CreateTempFile(std::vector<char> &pattern) {
+  return mkstemp(pattern.data());
+}
+
+bool XPlatform::Syscall::CloseFile(const int file_descriptor) {
+  return close(file_descriptor) == 0;
 }

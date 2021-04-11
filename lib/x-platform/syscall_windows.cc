@@ -19,7 +19,14 @@
 #include <Shlwapi.h>
 #include <WinBase.h>
 #include <Windows.h>
+#include <fcntl.h>
+#include <io.h>
+#include <share.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
+#include <cerrno>
+#include <cstdlib>
 #include <cstring>
 
 #include "syscall.h"
@@ -62,4 +69,25 @@ void XPlatform::Syscall::ClearBufferSafely(void *buffer, const size_t size) {
 bool XPlatform::Syscall::StringCompareIgnoreCase(const std::string &a,
                                                  const std::string &b) {
   return _stricmp(a.c_str(), b.c_str()) == 0;
+}
+
+int XPlatform::Syscall::CreateTempFile(std::vector<char> &pattern) {
+  if (_set_errno(0) != 0) {
+    return -1;
+  }
+
+  if (_mktemp_s(pattern.data(), pattern.size()) != 0) {
+    return -1;
+  }
+
+  auto fd{-1};
+  if (_sopen_s(&fd, pattern.data(), _O_RDWR | _O_CREAT | _O_EXCL, _SH_DENYNO,
+               _S_IREAD | _S_IWRITE) != 0) {
+    return -1;
+  }
+  return fd;
+}
+
+bool XPlatform::Syscall::CloseFile(const int file_descriptor) {
+  return _close(file_descriptor) == 0;
 }

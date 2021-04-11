@@ -20,6 +20,7 @@
 #define NATIVE_LIBHDFSPP_LIB_CROSS_PLATFORM_SYSCALL
 
 #include <string>
+#include <vector>
 
 /**
  * The {@link XPlatform} namespace contains components that
@@ -83,6 +84,10 @@ public:
    */
   static bool StringCompareIgnoreCase(const std::string &a,
                                       const std::string &b);
+
+  static int CreateTempFile(std::vector<char> &pattern);
+
+  static bool CloseFile(int file_descriptor);
 
 private:
   static bool WriteToStdoutImpl(const char *message);
