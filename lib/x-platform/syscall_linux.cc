@@ -53,7 +53,7 @@ bool XPlatform::Syscall::StringCompareIgnoreCase(const std::string &a,
   return strcasecmp(a.c_str(), b.c_str()) == 0;
 }
 
-int XPlatform::Syscall::CreateTempFile(std::vector<char> &pattern) {
+int XPlatform::Syscall::CreateAndOpenTempFile(std::vector<char> &pattern) {
   return mkstemp(pattern.data());
 }
 
