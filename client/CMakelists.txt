@@ -18,3 +18,6 @@ target_include_directories(strcmp_ign_case PRIVATE ../lib)
 
 add_executable(create_temp_file $<TARGET_OBJECTS:x_platform_utils_obj> create-temp-file.cc)
 target_include_directories(create_temp_file PRIVATE ../lib)
+
+add_executable(create_temp_dir $<TARGET_OBJECTS:x_platform_utils_obj> create-temp-dir.cc)
+target_include_directories(create_temp_dir PRIVATE ../lib)
