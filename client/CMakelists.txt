@@ -4,6 +4,9 @@ project(XPlatform_client)
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(Boost_USE_STATIC_LIBS ON)
+find_package(Boost 1.72 COMPONENTS program_options REQUIRED)
+
 add_executable(syscall $<TARGET_OBJECTS:x_platform_utils_obj> syscall.cc)
 target_include_directories(syscall PRIVATE ../lib)
 
@@ -23,3 +26,7 @@ add_executable(create_temp_dir $<TARGET_OBJECTS:x_platform_utils_obj> create-tem
 target_include_directories(create_temp_dir PRIVATE ../lib)
 
 add_executable(rmdir rmdir.cc)
+
+add_executable(parse_cmdline_args parse-cmdline-args.cc)
+target_include_directories(parse_cmdline_args PRIVATE ${Boost_INCLUDE_DIRS})
+target_link_libraries(parse_cmdline_args PRIVATE Boost::boost Boost::program_options)
