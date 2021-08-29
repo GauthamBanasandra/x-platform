@@ -6,9 +6,49 @@
 
 #include <boost/program_options.hpp>
 
+#include "options.h"
+
 namespace po = boost::program_options;
 
-std::string GetDesc() {
+class HdfsAllowSnapshot {
+public:
+  HdfsAllowSnapshot(int argc, char **argv);
+
+  [[nodiscard]] bool ValidateConstraints() const { return argc_ > 1; }
+  static std::string GetDescription();
+
+  [[nodiscard]] bool Do() const;
+
+protected:
+  struct OptionsHandlers {
+    static void HandleHelp();
+    static void HandlePath(const std::string &path);
+  };
+
+private:
+  int argc_;
+  po::variables_map opt_val_;
+  po::options_description opt_desc_;
+  po::positional_options_description pos_opt_desc_;
+};
+
+HdfsAllowSnapshot::HdfsAllowSnapshot(const int argc, char **argv)
+    : argc_{argc}, opt_desc_{"hdfs_allowSnapshot"} {
+  opt_desc_.add_options()("help,h", "Show the help for hdfs_allowSnapshot")(
+      "path", po::value<std::string>(),
+      "The path to the directory to make it snapshot-able");
+
+  pos_opt_desc_.add("path", 1);
+
+  po::store(po::command_line_parser(argc, argv)
+                .options(opt_desc_)
+                .positional(pos_opt_desc_)
+                .run(),
+            opt_val_);
+  po::notify(opt_val_);
+}
+
+std::string HdfsAllowSnapshot::GetDescription() {
   std::stringstream desc;
   desc << "Usage: hdfs_allowSnapshot [OPTION] PATH" << std::endl
        << std::endl
@@ -27,39 +67,38 @@ std::string GetDesc() {
   return desc.str();
 }
 
+bool HdfsAllowSnapshot::Do() const {
+  if (!ValidateConstraints()) {
+    std::cout << GetDescription();
+    return false;
+  }
+
+  if (opt_val_.count("help") > 0) {
+    OptionsHandlers::HandleHelp();
+    return true;
+  }
+
+  if (opt_val_.count("path") > 0) {
+    const auto path = opt_val_["path"].as<std::string>();
+    OptionsHandlers::HandlePath(path);
+    return true;
+  }
+
+  return true;
+}
+
+void HdfsAllowSnapshot::OptionsHandlers::HandleHelp() {
+  std::cout << GetDescription();
+}
+
+void HdfsAllowSnapshot::OptionsHandlers::HandlePath(const std::string &path) {
+  std::cout << "Allowing snapshot for the path: " << path << std::endl;
+}
+
 int main(int argc, char *argv[]) {
-  // We should have at least 2 arguments
-  if (argc < 2) {
-    std::cout << GetDesc();
+  const HdfsAllowSnapshot allow_snapshot(argc, argv);
+  if (!allow_snapshot.Do()) {
     exit(EXIT_FAILURE);
   }
-
-  po::options_description desc("hdfs_allowSnapshot");
-  desc.add_options()("help,h", "Show the help for hdfs_allowSnapshot")(
-      "path", po::value<std::string>(),
-      "The path to the directory to make it snapshot-able");
-
-  po::positional_options_description pos_desc;
-  pos_desc.add("path", 1);
-
-  po::variables_map var_map;
-  po::store(po::command_line_parser(argc, argv)
-                .options(desc)
-                .positional(pos_desc)
-                .run(),
-            var_map);
-  po::notify(var_map);
-
-  if (var_map.count("help") > 0) {
-    std::cout << GetDesc();
-    return 0;
-  }
-
-  if (var_map.count("path") > 0) {
-    const auto path = var_map["path"].as<std::string>();
-    std::cout << "Allowing snapshot for the path: " << path << std::endl;
-    return 0;
-  }
-
   return 0;
 }
