@@ -30,3 +30,6 @@ add_executable(rmdir rmdir.cc)
 # add_executable(parse_cmdline_args parse-cmdline-args.cc)
 # target_include_directories(parse_cmdline_args PRIVATE ${Boost_INCLUDE_DIRS})
 # target_link_libraries(parse_cmdline_args PRIVATE Boost::boost Boost::program_options)
+
+add_executable(list_dir $<TARGET_OBJECTS:x_platform_utils_obj> list-dir.cc)
+target_include_directories(list_dir PRIVATE ../lib)
