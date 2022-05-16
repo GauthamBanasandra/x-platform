@@ -34,6 +34,6 @@ if(NOT OPENSSL_FOUND)
 	message(FATAL_ERROR "Can't build without OpenSSL")
 endif()
 
-add_library(x_platform_utils_obj OBJECT ${SYSCALL_SRC} utils.cc)
+add_library(x_platform_utils_obj OBJECT ${SYSCALL_SRC} utils.cc dirent.cc)
 target_include_directories(x_platform_utils_obj PRIVATE ${OPENSSL_INCLUDE_DIR})
 target_link_libraries(x_platform_utils_obj PRIVATE ${OPENSSL_CRYPTO_LIBRARY})
